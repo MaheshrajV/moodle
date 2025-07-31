@@ -58,6 +58,57 @@ moodle-docker/
 ├── moodledata/          <-- Mounted Moodle data directory
 └── README.md
 
-Copy
-Edit
-http://localhost:8085
+visit your site: http://localhost:8085
+
+5. Build and Start the Container
+bash:
+docker compose up -d --build
+
+6. Verify Service is Running
+Check if Apache inside the container responds:
+curl -I http://localhost:8085
+Expected:
+
+http
+HTTP/1.1 302 Found
+Location: install.php
+
+7. Fix config.php if needed
+If config.php was created manually or modified:
+bash
+docker exec -it moodle-php83 bash
+nano /var/www/html/config.php
+Replace _DIR_ with __DIR__ on line like:
+
+php
+require_once(__DIR__ . '/lib/setup.php');
+
+bash
+sudo mysql -u root
+USE moodle;
+SHOW TABLES;
+You should see dozens of tables after install completes.
+
+Summary of All Key Shell Commands
+bash
+# Create working dir
+mkdir ~/Documents/moodle-docker && cd ~/Documents/moodle-docker
+
+# Build and start container
+docker compose up -d --build
+
+# Check container status
+docker ps
+
+# Check Apache response
+curl -I http://localhost:8085
+
+# Access container to debug/fix
+docker exec -it moodle-php83 bash
+
+# View logs if error
+docker logs moodle-php83 | tail -n 50
+
+# Reset environment if needed
+docker compose down -v
+sudo rm -rf ./moodledata
