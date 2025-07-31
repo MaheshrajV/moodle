@@ -1,4 +1,4 @@
-# Moodle 5.0.5 Local Setup with Docker (PHP 8.3 + Apache + MariaDB)
+# Setup moodle LMS Using Docker on linux host:
 
 This project sets up a Moodle 5.0.5 environment using:
 
